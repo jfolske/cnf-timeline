@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNF Document Collection Timeline</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-purple-500: rgba(128, 90, 213, 1);
+            --color-green-600: rgb(0, 230, 118); /* En route */
+        }
+
+
+</body>
+</html>
+
+
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-cream-50);
+            color: var(--color-charcoal-700);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--color-teal-500);
+            padding-bottom: 20px;
+        }
+
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--color-charcoal-700);
+        }
+
+
+        .file-number {
+            font-size: 14px;
+            color: var(--color-slate-500);
+            margin-top: 5px;
+        }
+
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--color-teal-500);
+        }
+
+
+        .timeline-item {
+            margin-bottom: 30px;
+            padding-left: 80px;
+            position: relative;
+        }
+
+
+        .timeline-marker {
+            position: absolute;
+            left: 13px;
+            top: 0;
+            width: 34px;
+            height: 34px;
+            background: var(--color-teal-500);
+            border: 3px solid var(--color-cream-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .timeline-item.completed .timeline-marker {
+            background: var(--color-teal-600);
+        }
+
+
+        .timeline-item.pending .timeline-marker {
+            background: var(--color-gray-300);
+        }
+
+
+        .timeline-item.awaiting .timeline-marker {
+            background: var(--color-orange-500);
+        }
+
+        .timeline-item.enroute .timeline-marker {
+            background: var(--color-green-600);
+        }
+
+
+        .timeline-item.delivery .timeline-marker {
+            background: var(--color-purple-500);
+        }
+
+        .timeline-content {
+            background: var(--color-white);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-teal-500);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .timeline-item.pending .timeline-content {
+            border-left-color: var(--color-gray-300);
+        }
+
+
+        .timeline-item.awaiting .timeline-content {
+            border-left-color: var(--color-orange-500);
+        }
+
+
+        .timeline-item.enroute .timeline-content {
+            border-left-color: var(--color-green-600);
+        }
+
+        .timeline-item.delivery .timeline-content {
+            border-left-color: var(--color-purple-500);
+        }
+
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--color-slate-500);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+
+        .timeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-charcoal-700);
+            margin-bottom: 8px;
+        }
+
+
+        .timeline-description {
+            font-size: 13px;
+            color: var(--color-slate-500);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .extra-top-space {
+            margin-top: 10px; /* adjust to taste */
+            display: block;   /* ensures the margin applies as a block */
+        }
+
+        .timeline-contact {
+            font-size: 12px;
+            color: var(--color-teal-600);
+            background: rgba(33, 128, 141, 0.08);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+
+        .timeline-status {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+
+        .status-completed {
+            background: rgba(33, 128, 141, 0.15);
+            color: var(--color-teal-600);
+            text-transform: uppercase;
+        }
+
+
+        .status-pending {
+            background: rgba(167, 169, 169, 0.15);
+            color: var(--color-slate-500);
+            text-transform: uppercase;
+        }
+
+
+        .status-awaiting {
+            background: rgba(168, 75, 47, 0.15);
+            color: var(--color-orange-500);
+            text-transform: uppercase;
+        }
+
+
+        .status-enroute {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--color-green-600);
+            text-transform: uppercase;
+        }
+
+
+        .status-delivery {
+            background: rgba(128, 90, 213, 0.15);
+            color: var(--color-purple-500);
+            text-transform: uppercase;
+        }
+
+
+        .document-links {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+
+/* Base layout for all doc-link buttons */
+.doc-link {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 6px 10px;
+    background: var(--color-cream-100);
+    border: 1px solid var(--color-gray-300);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--color-teal-500);
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;   /* was flex-start; now centers horizontally */
+    text-align: center;    /* makes multi-line text centered too */
+}
+
+/* Primary (dark teal) button overrides */
+.doc-link-primary {
+    background: var(--color-teal-500);
+    color: var(--color-white);          /* main text white */
+    border-color: var(--color-teal-500);
+    font-weight: 600;
+}
+
+/* Shared main line */
+.doc-main {
+    font-weight: 500;
+}
+
+/* Default date on light buttons */
+.doc-date {
+    font-size: 10px;
+    color: var(--color-slate-500);
+    margin-top: 2px;
+}
+
+/* Date on dark primary buttons: make it light so it’s visible */
+.doc-link-primary .doc-date {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+        .doc-link:hover {
+            background: var(--color-teal-500);
+            color: var(--color-white);
+            border-color: var(--color-teal-500);
+        }
+
+
+        .doc-link-primary {
+            background: var(--color-teal-500);
+            color: var(--color-white);
+            border-color: var(--color-teal-500);
+            font-weight: 600;
+        }
+
+
+        .doc-link-primary:hover {
+            background: var(--color-teal-600);
+            border-color: var(--color-teal-600);
+        }
+
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            padding: 15px;
+            background: var(--color-cream-100);
+            border-radius: 8px;
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+
+        .dot-completed {
+            background: var(--color-teal-600);
+        }
+
+
+        .dot-awaiting {
+            background: var(--color-orange-500);
+        }
+
+
+        .dot-enroute {
+            background: var(--color-green-600);
+        }
+
+
+        .dot-delivery {
+            background: var(--color-purple-500);
+        }
+
+
+        .dot-pending {
+            background: var(--color-gray-300);
+        }
+
+
+        .summary {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(33, 128, 141, 0.08);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-teal-500);
+        }
+
+
+        .summary h2 {
+            margin-top: 0;
+            color: var(--color-charcoal-700);
+        }
+
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+
+        .stat-box {
+            background: var(--color-white);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid var(--color-gray-300);
+        }
+
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-teal-500);
+        }
+
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--color-slate-500);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+
+        @media (max-width: 600px) {
+            .timeline::before {
+                left: 15px;
+            }
+
+
+            .timeline-item {
+                padding-left: 60px;
+            }
+
+
+            .timeline-marker {
+                left: 0px;
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>French Nationality Certificate Journey</h1>
+            <div class="file-number">File: CNF 11411/2025 | Tribunal judiciaire de Paris</div>
+        </header>
+
+
+        <div class="timeline">
+            <!-- Initial Filing -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">1</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">17 Oct 2025</div>
+                    <div class="timeline-title">CNF Application Submitted</div>
+                    <div class="timeline-description">Initial application for French Nationality Certificate filed with Tribunal judiciaire de Paris via the Consulate in Vancouver (by courrier).</div>
+                    <div class="timeline-contact">Consulate: French Consulate General Vancouver (Maïder CHRISOSTOME)</div>
+                    <div class="timeline-status status-completed">✓ Registered</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1GHECr49xiO5C2rIeNACc71nBk_J7LqSa/view?usp=drive_link" class="doc-link doc-link-primary" target="_blank">
+                                <span class="doc-main">✅ Submission</span>
+                                <span class="doc-date">17 Oct 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Court Response Received -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">2</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">27 Nov 2025</div>
+                    <div class="timeline-title">Court Request for Additional Documents</div>
+                    <div class="timeline-description">Received acknowledgment of receipt and formal request for supplementary documentation.</div>
+                    <div class="timeline-status status-completed">✓ Received</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1KfD5XXEP9N5Fgar8jMLzVuDGLCKkcn3c/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Court Email</span>
+                                <span class="doc-date">27 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1IHGtCJa-V79wjCRJgubHwaJvXiyM3Z4N/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📄 Court Letter</span>
+                                <span class="doc-date">27 Nov 2025</span>
+                        </a>
+                        <a href="https://app.mural.co/t/lifeplannerjane5531/m/lifeplannerjane5531/1765014166923/44eca43168c1dae66aa9bc591b15e119d628d5a4?wid=0-1765674076587&outline=open" class="doc-link doc-link-primary" target="_blank">
+                                <span class="doc-main">✅ Translated Letter Mural*</span>
+                                <span class="doc-date">27 Nov 2025</span>
+                        </a>
+                    </div>
+                <div class="timeline-description extra-top-space">
+                    * Mural is best viewed using the Google Chrome browser. Link may be viewed as a visitor.
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Consulate Inquiry -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">3</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">30 Nov 2025 → 2 Dec 2025</div>
+                    <div class="timeline-title">French Consulate Vancouver – Additional Documents Query</div>
+                    <div class="timeline-description">Requested consular archives search for French identity documents (passports, ID cards) for applicant and father.<br> <strong>Outcome:</strong> No further documents found.</div>
+                    <div class="timeline-contact">Consulate: French Consulate General Vancouver (Maïder CHRISOSTOME)</div>
+                    <div class="timeline-status status-completed">✓ Complete</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1IbUdJ2hMjjzPy1zQ9rS92YOlmfYapF8W/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">30 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1IwDWHvR-asTjVyNIOsxMpSuTL-t_Jc92/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Father's Birth Certificate (Cattolica) -->
+            <div class="timeline-item enroute">
+                <div class="timeline-marker">4</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">27 Nov 2025 → </div>
+                    <div class="timeline-title">Father's Birth Certificate – Request to Cattolica</div>
+                    <div class="timeline-description">Requested estratto per riassunto (full birth certificate) of Elio Terzo GESSAROLI from Comune di Cattolica.<br> <strong>Outcome:</strong> Birth certificate found and mailed to Marc-André's address.</div>
+                    <div class="timeline-contact">Contact: Ufficio di Stato Civile, Cattolica (Marina ANDRUCCIOLI)</div>
+                    <div class="timeline-status status-enroute">⏳ En Route by Post</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1IIqXxI6_MB4ObzvGFgd3baYwlkzsZR9B/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">27 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1IT4mCWVjnb9icSV7noMkiSgVL_6SpFFF/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">💬 Quote</span>
+                                <span class="doc-date">28 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1InNiHq8qzP8_JygORNegmrHKoKTpADk_/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">💳 Payment Conf. Euros 7.60</span>
+                                <span class="doc-date">30 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N01uw-99CAbj_btg8dDBPihc-2v6-7uU/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Orig. Send Date 5 Dec 2025</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1ROwGabIlaswL4dprlWo3mJ62ZptotM8J/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">💬 New Charge Euros 12.90</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1RPPgTUYslRfptqU0NSXxZ-J7-_Ywl5Fk/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Follow Up Question</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1UE35trt7lR77w8nu32o5nApaFkcpNA_2/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Charge Clarification</span>
+                                <span class="doc-date">15 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1UfulyXJ-kfUeIIrEg48EW15ahLErX58B/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">💳 Payment Conf. Euros 12.90</span>
+                                <span class="doc-date">16 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- San Giovanni in Marignano Inquiries -->
+            <div class="timeline-item delivery">
+                <div class="timeline-marker">5</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">30 Nov 2025 → 2 Dec 2025</div>
+                    <div class="timeline-title">Grandfather's Documents – San Giovanni in Marignano</div>
+                    <div class="timeline-description">Requested (1) grandfather Giuseppe's birth certificate and (2) grandparents' marriage certificate from Comune di San Giovanni in Marignano.<br> <strong>Outcomes:</strong> Grandfather's birth certificate found and shared electronically. Notification of grandparents' marriage in Colombelles.</div>
+                    <div class="timeline-contact">Contact: Ufficio di Stato Civile, San Giovanni in Marignano (Nadia ROSSI)</div>
+                    <div class="timeline-status status-delivery">✓ Received (digitally)</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1I_p8ULWF0PxDhTky6Eh7c9WFtRYMiP6A/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">30 Nov 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1IhJ9nDPshhnwlxdzsstKNKoLTsfVqq2J/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response Email</span>
+                                <span class="doc-date">1 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1InNiHq8qzP8_JygORNegmrHKoKTpADk_/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">💳 Payment Conf.</span>
+                                <span class="doc-date">1 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1TsxwQOP5yAfJFWZBKr001KsJa_QQcQnn/view?usp=share_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Delivery Email</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://app.mural.co/t/lifeplannerjane5531/m/lifeplannerjane5531/1765014166923/44eca43168c1dae66aa9bc591b15e119d628d5a4?wid=0-1765673862715&outline=open" class="doc-link doc-link-primary" target="_blank">
+                                <span class="doc-main">✅ Birth Extract Mural*</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1JcYf1E1aCEZ3Ea9VjKa9FY8e4hmHSFUp/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📜 Birth Extract File</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1K32bRrkjaNCVIFvXT-U1Ca7bYCxujQnx/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                    </div>
+                <div class="timeline-description extra-top-space">
+                    * Mural is best viewed using the Google Chrome browser. Link may be viewed as a visitor.
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Colombelles Marriage Certificate -->
+            <div class="timeline-item delivery">
+                <div class="timeline-marker">6</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">1 Dec 2025 → 18 Dec 2025</div>
+                    <div class="timeline-title">Grandparents' Marriage Certificate – Colombelles</div>
+                    <div class="timeline-description">Requested and followed up on the marriage certificate of Giuseppe GESSAROLI & Lorenza STACCOLI from Comune/Mairie of Colombelles (Normandy, France).<br> <strong>Outcome:</strong> Document found and sent by postal mail.</div>
+                    <div class="timeline-contact">Contact: Mairie de Colombelles, Service au public (Laetitia THIERRY)</div>
+                    <div class="timeline-status status-delivery">✓ Received (via Marc-André)</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1IuzDz2Ik6ZLig5FSdEtd0AKwS-9dQJiC/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">1 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1KAhTV6DBTZ1O1c9TQ9DfjI7MkYKX7q3I/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response (sent 3 Dec)</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1KBOk1dKciDZ86ozf6jvAMRLwort0_D_v/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://app.mural.co/t/lifeplannerjane5531/m/lifeplannerjane5531/1765014166923/44eca43168c1dae66aa9bc591b15e119d628d5a4?wid=0-1766189923611" class="doc-link doc-link-primary" target="_blank">
+                                <span class="doc-main">✅ Marriage Extract Mural*</span>
+                                <span class="doc-date">18 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1V16XO_NYNdQ8FvR6rWVJRK3FYoucPaxD/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📜 Marriage Extract File</span>
+                                <span class="doc-date">18 Dec 2025</span>
+                        </a>
+                    </div>
+                <div class="timeline-description extra-top-space">
+                    * Mural is best viewed using the Google Chrome browser. Link may be viewed as a visitor.
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Cattolica Marriage Certificate (Backup) -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">7</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2 Dec 2025 → 5 Dec 2025</div>
+                    <div class="timeline-title">Grandparents' Marriage – Backup Request to Cattolica</div>
+                    <div class="timeline-description">Parallel request to Cattolica in case marriage was in Italy (per father's recollection).<br> <strong>Outcome:</strong> Response was that marriage did not take place in Cattolica but in San Giovanni in Marignano. However, San Giovanni in Marignano indicated that was not the case but that instead the marriage took place in Colombelles. Columbelles later did seem to find the marriage certificate and sent it by postal mail (see Colombelles inquiry section).</div>
+                    <div class="timeline-contact">Contact: Ufficio di Stato Civile, Cattolica (Marina ANDRUCCIOLI)</div>
+                    <div class="timeline-status status-completed">✓ Complete</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1J1l_Ak3GHnC4eoX5KbnuFNFn9sGKzeVu/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N01uw-99CAbj_btg8dDBPihc-2v6-7uU/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N0Ve71D1eLwbL6o76Xw6QOyOpSdwV-At/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N5WUHeLLQA_WTWB5JjrZUglGdrRjgst_/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N6TC-PvgJIMKZqMx70kKrX35JNjijM8u/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Thank You</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1N70vtV_hN9hc1pOLb76Tbjj9xbv2ygsS/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">5 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Calvados -->
+            <div class="timeline-item delivery">
+                <div class="timeline-marker">8</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2 Dec 2025 → 3 Dec 2025</div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Calvados</div>
+                    <div class="timeline-description">Submitted inquiry to Archives départementales du Calvados seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI.<br> <strong>Outcome:</strong> Naturalisation dossier (inclusive of naturalisation decree) and Foreigner's Files for Giuseppe and Lorenza Gessaroli. Includes ID Cards that list Bruno and Terzo as children; these coupled with the naturlisation decree and Journal entry may be useful in responding to the Paris Tribunal.</div>
+                    <div class="timeline-contact">Contact: Archives départementales du Calvados</div>
+                    <div class="timeline-status status-delivery">✓ Received (digitally)</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1J6L368-iCiXyh6DEgy-V6UFo0MiHU3Sx/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">2 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Calvados communications -->
+                        <a href="https://drive.google.com/file/d/1KN32YcTWHFRwFU1_6Ptv61KlL3E_rnvl/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Calvados Response</span>
+                                <span class="doc-date">3 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1KQNiXYkfStiXn-DlFYhBO7cezZc5WmFp/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Thank You</span>
+                                <span class="doc-date">3 Dec 2025</span>
+                        </a>
+                        <a href="https://app.mural.co/t/lifeplannerjane5531/m/lifeplannerjane5531/1765014166923/44eca43168c1dae66aa9bc591b15e119d628d5a4?wid=0-1765671691533&outline=open" class="doc-link doc-link-primary" target="_blank">
+                                <span class="doc-main">✅ Documents Mural*</span>
+                                <span class="doc-date">3 Dec 2025</span>
+                        </a>
+                    </div>
+                <div class="timeline-description extra-top-space">
+                    * Mural is best viewed using the Google Chrome browser. Link may be viewed as a visitor.
+                </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Toulouse -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">9</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">12 Dec 2025 → 31 Dec 2025</div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Toulouse</div>
+                    <div class="timeline-description">Submitted inquiry to Archives départementales de la Haute-Garonne, Toulouse seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI.<br> <strong>Outcome:</strong> No documents found. ID documents are discarded after a 20-year period of administrative utility. Recommendation to seek documents via the National Archives (already in process). </div>
+                    <div class="timeline-contact">Contact: Archives départementales de la Haute-Garonne</div>
+                    <div class="timeline-status status-completed">✓ Response received</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1QdXUfxn5oOB4W8jvmAJkV6YdytLMpBg7/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Toulouse communications -->
+                        <a href="https://drive.google.com/file/d/1QqLRMp7tWQ8zzcda_r6-ZTpTyJPWjjjO/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Toulouse auto-reply</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1VlUWKuJovMfq9MQEoMvmkGZ8KjXt6MmW/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Toulouse response</span>
+                                <span class="doc-date">31 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Pyrénées-Atlantiques -->
+            <div class="timeline-item completed">
+                <div class="timeline-marker">10</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">12 Dec 2025 → 25 Dec 2025</div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Pyrénées-Atlantiques</div>
+                    <div class="timeline-description">Submitted inquiry to Archives départementales des Pyrénées-Atlantiques seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI.<br> <strong>Outcome:</strong> Cancelled request based on new knowledge that Elio worked in Bachebirou in Hautes-Pyrénées and did not live/work in Pyrénées-Atlantiques. </div>
+                    <div class="timeline-contact">Contact: Archives départementales des Pyrénées-Atlantiques</div>
+                    <div class="timeline-status status-completed">✓ Cancelled</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1Qr2JSv5aPZsBIzYmUbOABomrHSR5GdY-/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Pyrénées-Atlantiques communications -->
+                        <a href="https://drive.google.com/file/d/1R71IUnpl2X8wp6wfbd0xw9fTYRDZB6M6/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Auto-reply</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1ViiMQJY2WRGH8bBOnsXOPmRf9pjfUsvJ/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">24 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1ViuMv24dHRcaAkCJwUmd86I9DEnALlli/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">25 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Hautes-Pyrénées -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">11</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">15 Dec 2025 → </div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Hautes-Pyrénées</div>
+                    <div class="timeline-description">Submitted inquiry to Archives départementales des Hautes-Pyrénées seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI. Originating email of 12 December was met with a response mandating filling out an online form to submit the request (done on 15 December).<br> <strong>Outcome:</strong> Initially, no documents found. Followed up re: Bachebirou affiliation. </div>
+                    <div class="timeline-contact">Contact: Archives départementales des Hautes-Pyrénées</div>
+                    <div class="timeline-status status-awaiting">✓ Reopened</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1R8JkeLko1CYq3xM_kxhcGQstvxXmqEbP/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Hautes-Pyrénées communications -->
+                        <a href="https://drive.google.com/file/d/1RBg30jtnTLFCStRE0yP__osyhyS2gyIx/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Auto-reply</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1UQsVu5AptQDhdso-kJueaScZV3w6Y5g5/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Link to compulsory form</span>
+                                <span class="doc-date">15 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1UXyz7DsvpdW58_xSoTNx-Z1sdf9kY2qc/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">🖥️ Form submission screenshot</span>
+                                <span class="doc-date">15 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1UbR_NT3kXBZUS-l5vuhSk00CNsI6Q69Y/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Submission response email</span>
+                                <span class="doc-date">15 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1VMBTFuX2NtT91W31Cn_S53YVP4cmoRD8/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">19 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1Vkjem5QUdG0JzoYM3747lKF5awpGcSue/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply (Reopen Request)</span>
+                                <span class="doc-date">25 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Montréal -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">12</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">12 Dec 2025 → </div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Montréal</div>
+                    <div class="timeline-description">Submitted inquiry to Consulat général de France à Montréal seeking consular documents (1951-1957+) for Elio Terzo GESSAROLI</div>
+                    <div class="timeline-contact">Contact: Consulat général de France à Montréal</div>
+                    <div class="timeline-status status-completed">✓ Requested</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1REF3mAxQtGS6YG1R4iCXvpG5_GgYQUr_/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Montréal communications -->
+                        <!--a href="LINK" class="doc-link" target="_blank">✉️ Montréal auto-reply</a -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives Quebec -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">13</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">12 Dec 2025 → </div>
+                    <div class="timeline-title">Historical French Identity Documents Search - Quebec</div>
+                    <div class="timeline-description">Submitted inquiry to Consulat général de France à Québec seeking consular documents (1951-1957+) for Elio Terzo GESSAROLI</div>
+                    <div class="timeline-contact">Contact: Consulat général de France à Québec</div>
+                    <div class="timeline-status status-completed">✓ Requested</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1REwjKwpA4gycGVMNcibI47LK4SAgsnL_/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">12 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Quebec communications -->
+                        <!--a href="LINK" class="doc-link" target="_blank">✉️ Quebec auto-reply</a -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Centre des Archives du Personnel Militaire -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">14</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">13 Dec 2025 → </div>
+                    <div class="timeline-title">Military Dossier Identity Documents Search - CAPM Pau</div>
+                    <div class="timeline-description">Submitted inquiry to Centre des Archives du Personnel Militaire (CAPM) seeking the état signalétique et des services (core service record), any copy of the livret militaire or equivalent, any certificates / attestations mentioning French nationality or service for Elio Terzo GESSAROLI</div>
+                    <div class="timeline-contact">Contact: Centre des Archives du Personnel Militaire</div>
+                    <div class="timeline-status status-awaiting">✓ Requested</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1RPkQqghPKMpdUfZM74_eC80kE_k4xVc2/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest CAPM communications -->
+                        <a href="https://drive.google.com/file/d/1RTpX9MoiWRm9oHW8T4epH1vji70PuRoS/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://www.servicehistorique.sga.defense.gouv.fr/form/demande-de-demarche-administrative" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Link to form</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1VR4Fjgf9sqmjmiBeSE-YdnRptZqBS1Ln/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Submission auto-reply</span>
+                                <span class="doc-date">22 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Archives nationales – numéro X et dossier de naturalisation -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">15</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">13 Dec 2025 → </div>
+                    <div class="timeline-title">Naturalisation Documents Search - Archives nationales</div>
+                    <div class="timeline-description">Submitted inquiry to Archives nationales seeking the naturalisation file number and naturalisation file the Giuseppe GESSAROLI family</div>
+                    <div class="timeline-contact">Contact: Archives nationales</div>
+                    <div class="timeline-status status-completed">✓ Requested</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1RYJXwcwuT1o0Vbrns5Xsv21zxDL7fV2W/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <!-- New buttons for latest Archives nationales communications -->
+                        <a href="https://drive.google.com/file/d/1RfkdRzE6S4zWh9Knuo3NXNzF7R6peqXY/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">🖥️ Account Created</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://www.siv.archives-nationales.culture.gouv.fr/siv/cms/content/display.action?uuid=Accueil1RootUuid&onglet=1" class="doc-link" target="_blank">
+                                <span class="doc-main">🔗 Link to Account</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1ll0HF74smzfr75whBNDc4Gta9lHpowKH/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">#️⃣ Request Number</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1Rgc2K4zJvBwvYvaVgqgNKuAENivbyL6j/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Request Text</span>
+                                <span class="doc-date">13 Dec 2025</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1TsyYu0wl5yMVPxDrnUw5sSoW-DQ8EnwW/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Archives auto-reply</span>
+                                <span class="doc-date">15 Dec 2025</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Sous-direction de l’accès à la nationalité française (Sub-Directorate of Access to French Nationality; SDANF) -->
+            <div class="timeline-item awaiting">
+                <div class="timeline-marker">16</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">4 Jan 2026 → </div>
+                    <div class="timeline-title">Sous-direction de l’accès à la nationalité française (SDANF)</div>
+                    <div class="timeline-description">Submitted inquiry to SDANF seeking any file relating to French nationality for Elio Terzo Gessaroli. </div>
+                    <div class="timeline-contact">Contact: Sous-direction de l’accès à la nationalité française (sdanf-accueil@interieur.gouv.fr)</div>
+                    <div class="timeline-status status-awaiting">✓ Awaiting</div>
+                    <div class="document-links">
+                        <a href="https://drive.google.com/file/d/1Vu_A6IImPeWyLRL_-m0lqo9lIht-GgJQ/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📤 Request</span>
+                                <span class="doc-date">4 Jan 2026</span>
+                        </a>
+                        <!-- New buttons for latest SDANF communications -->
+                        <!-- <a href="..." class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Auto-reply</span>
+                                <span class="doc-date">XX XXX 2026</span>
+                        </a>
+                        <a href="..." class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Response</span>
+                                <span class="doc-date">XX XXX 2026</span>
+                        </a>
+                        <a href="..." class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">XX XXX 2026</span>
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Document Translation -->
+            <div class="timeline-item pending">
+                <div class="timeline-marker">16</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">TBD</div>
+                    <div class="timeline-title">Certified French Translations (Traducteur Assermenté)</div>
+                    <div class="timeline-description">Once Italian documents received, send to sworn translator for certified French translations (~€40-60 per document)</div>
+                    <div class="timeline-status status-pending">⏳ Pending</div>
+                </div>
+            </div>
+
+
+            <!-- Final Submission to Paris -->
+            <div class="timeline-item pending">
+                <div class="timeline-marker">17</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">By 27 Feb 2026</div>
+                    <div class="timeline-title">Final Submission to Tribunal judiciaire de Paris</div>
+                    <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service)</div>
+                    <div class="timeline-contact">Deadline: 3 months from 27 Nov 2025</div>
+                    <div class="timeline-status status-pending">⏳ Final Step</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot dot-completed"></div>
+                <span>Completed/Responded</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-awaiting"></div>
+                <span>Awaiting Response</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-enroute"></div>
+                <span>En Route</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-delivery"></div>
+                <span>Delivered</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-pending"></div>
+                <span>Pending/Future Action</span>
+            </div>
+        </div>
+
+
+        <div class="summary">
+            <h2>Progress Summary</h2>
+                <div class="stat-box">
+                    <div class="stat-number" id="days-until-deadline"></div>
+                    <div class="stat-label">Until Deadline</div>
+                </div>
+            <p>You have systematically contacted multiple authorities across Italy, France, and Canada to gather the required documentation for your CNF application. Below is your current progress:</p>
+            <div class="summary-stats">
+                <!-- Row 1 -->
+                <div class="stat-box">
+                    <div class="stat-number" id="count-completed"></div>
+                    <div class="stat-label">Steps Completed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="count-awaiting"></div>
+                    <div class="stat-label">Awaiting Response</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="count-enroute"></div>
+                    <div class="stat-label">En Route by Post</div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="stat-box">
+                    <div class="stat-number" id="count-delivered"></div>
+                    <div class="stat-label">Document Deliveries</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="count-pending"></div>
+                    <div class="stat-label">Future/Pending Steps</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+(function () {
+    // 1) Days until deadline
+    var deadline = new Date(2026, 1, 27); // 27 Feb 2026, month 0-based
+    var today = new Date();
+
+    deadline.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    var msPerDay = 24 * 60 * 60 * 1000;
+    var diffDays = Math.round((deadline - today) / msPerDay);
+
+    var daysEl = document.getElementById('days-until-deadline');
+    if (daysEl) {
+        if (diffDays >= 0) {
+            daysEl.textContent = diffDays + ' days';
+        } else {
+            daysEl.textContent = 'Deadline passed';
+        }
+    }
+
+    // 2) Disposition counters
+    var completedCount = document.querySelectorAll('.timeline-item.completed').length;
+    var awaitingCount  = document.querySelectorAll('.timeline-item.awaiting').length;
+    var enrouteCount   = document.querySelectorAll('.timeline-item.enroute').length;
+    var deliveredCount = document.querySelectorAll('.timeline-item.delivery').length;
+    var pendingCount   = document.querySelectorAll('.timeline-item.pending').length;
+
+    var completedEl = document.getElementById('count-completed');
+    if (completedEl) completedEl.textContent = completedCount;
+
+    var awaitingEl = document.getElementById('count-awaiting');
+    if (awaitingEl) awaitingEl.textContent = awaitingCount;
+
+    var enrouteEl = document.getElementById('count-enroute');
+    if (enrouteEl) enrouteEl.textContent = enrouteCount;
+
+    var deliveredEl = document.getElementById('count-delivered');
+    if (deliveredEl) deliveredEl.textContent = deliveredCount;
+
+    var pendingEl = document.getElementById('count-pending');
+    if (pendingEl) pendingEl.textContent = pendingCount;
+})();
+</script>
+</body>
+</html>
