@@ -1170,8 +1170,8 @@
         <div class="summary">
             <h2>Progress Summary</h2>
                 <div class="stat-box">
-                    <div class="stat-number" id="days-until-deadline"></div>
-                    <div class="stat-label">Since Reply Delivered</div>
+                    <div class="stat-number" id="days-since-delivery"></div>
+                    <div class="stat-label">Since Reply Delivered to Paris Tribunal</div>
                 </div>
             <p>You have systematically contacted multiple authorities across Italy, France, and Canada to gather the required documentation for your CNF application. Below is your current progress:</p>
             <div class="summary-stats">
@@ -1214,7 +1214,7 @@
     var msPerDay = 24 * 60 * 60 * 1000;
     var diffDays = Math.round((today - startDate) / msPerDay);
 
-    var daysEl = document.getElementById('days-until-deadline');
+    var daysEl = document.getElementById('days-since-delivery');
     if (daysEl) {
         if (diffDays >= 0) {
             daysEl.textContent = diffDays + ' days';
