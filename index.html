@@ -1090,14 +1090,14 @@
 
 
             <!-- Submission to Paris -->
-            <div class="timeline-item enroute">
+            <div class="timeline-item delivery">
                 <div class="timeline-marker">18</div>
                 <div class="timeline-content">
-                    <div class="timeline-date">~16 Feb 2026 (estimated)</div>
+                    <div class="timeline-date">2 Feb 2026</div>
                     <div class="timeline-title">Reply Submitted to Tribunal judiciaire de Paris</div>
-                    <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service)</div>
-                    <div class="timeline-contact">Deadline: 3 months from 27 Nov 2025</div>
-                    <div class="timeline-status status-enroute">🚗 In Transit</div>
+                    <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service).  <br> <strong>Outcome:</strong> Reply delivered to Tribunal 25 days before deadline. </div>
+                    <div class="timeline-contact">Deadline: 27 February 2026 (3 months from 27 Nov 2025)</div>
+                    <div class="timeline-status status-delivery">✓ Delivered</div>
                     <div class="document-links">
                         <!-- New buttons for document links -->
                         <a href="https://drive.google.com/file/d/1MmCsCpXVu1qE6Ybn-7SbhcEIzIL07FB-/view?usp=drive_link" class="doc-link" target="_blank">
@@ -1171,7 +1171,7 @@
             <h2>Progress Summary</h2>
                 <div class="stat-box">
                     <div class="stat-number" id="days-until-deadline"></div>
-                    <div class="stat-label">Until Deadline</div>
+                    <div class="stat-label">Since Reply Delivered</div>
                 </div>
             <p>You have systematically contacted multiple authorities across Italy, France, and Canada to gather the required documentation for your CNF application. Below is your current progress:</p>
             <div class="summary-stats">
@@ -1204,22 +1204,22 @@
 
 <script>
 (function () {
-    // 1) Days until deadline
-    var deadline = new Date(2026, 1, 27); // 27 Feb 2026, month 0-based
+    // 1) Days since reply delivered (2 Feb 2026)
+    var startDate = new Date(2026, 1, 2); // 2 Feb 2026, month is 0-based (0 = Jan, 1 = Feb)
     var today = new Date();
 
-    deadline.setHours(0, 0, 0, 0);
+    startDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
 
     var msPerDay = 24 * 60 * 60 * 1000;
-    var diffDays = Math.round((deadline - today) / msPerDay);
+    var diffDays = Math.round((today - startDate) / msPerDay);
 
     var daysEl = document.getElementById('days-until-deadline');
     if (daysEl) {
         if (diffDays >= 0) {
             daysEl.textContent = diffDays + ' days';
         } else {
-            daysEl.textContent = 'Deadline passed';
+            daysEl.textContent = 'Not yet delivered';
         }
     }
 
